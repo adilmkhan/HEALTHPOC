@@ -1,8 +1,12 @@
-Purpose: Creating a cloud native querying and data analytics solution for analyzing healthcare data.
+## Purpose:
+
+Creating a cloud native querying and data analytics solution for analyzing healthcare data.
+
+## Cloud Architecture
 
 ![Cloud_Architecture](./images/cloud_architecure.png "Architecture Diagram")
 
-**In Scope:**
+## List of Tools and Technologies Incorporated in Design:
 
 - API-Gateway: Creating an API-Gateway for the endpoint where the health data/vitals frontend will send the data.
 
@@ -23,8 +27,19 @@ Purpose: Creating a cloud native querying and data analytics solution for analyz
   - A url link for a responsive webpage will be shared to enter and submit synthetic health data/vitals.
 - Data Analytics: Amazon QuickSight will be pointed to the Athena table and health data/vitals will be analyzed.
 
-- Demonstrate how services in the cloud can be connected to State native tools like Tableau.
+## Infrastructure as Code
 
-**Out of Scope:**
+All infrastructure is defined under the `iac/` directory as Terraform blueprints. **No AWS resources** will be created until you explicitly run Terraform in that folder.
 
-- Create organized, aesthetically pleasing and meaningful data visualizations.
+### Deployment (Optional)
+
+To provision the full end-to-end stack (API Gateway → Firehose → S3 → Lambda → Athena):
+
+```bash
+cd iac
+terraform init
+terraform plan -var="s3_bucket_name=<YOUR_UNIQUE_BUCKET_NAME>"
+terraform apply -var="s3_bucket_name=<YOUR_UNIQUE_BUCKET_NAME>"
+```
+
+### Click **[here](https://adilmkhan.github.io/HEALTHPOC/)** to view the webpage on Github.

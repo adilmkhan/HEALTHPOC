@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Healthcare Data POC</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
+    <script>
+      function validateForm() {
+        var serviceDate = document.getElementById("dateofservice").value;
+        var dischargeDate = document.getElementById("dischargedate").value;
+        if (dischargeDate < serviceDate) {
+          alert("Discharge date cannot be before the date of service!");
+          return false; // prevent form submission
+        }
+        return true; // form can be submitted
+      }
+    </script>
+    <script>
+      function areFieldsEmpty() {
+        const fields = document.querySelectorAll(
+          'input[type="text"], input[type="number"], input[type="date"]'
+        );
+        for (let i = 0; i < fields.length; i++) {
+          if (fields[i].value === "") {
+            alert("All Fields are required and cannot be empty!");
+            return false; // Return false immediately if a field is empty
+          }
+        }
+        return true; // Return true only if all fields are filled
+      }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      async function callAPI() {
+        const data = {
+          firstname: document.getElementById("fn").value,
+          lastname: document.getElementById("ln").value,
+          dmhid: document.getElementById("dmhid").value,
+          diastolic: document.getElementById("bpd").value,
+          systolic: document.getElementById("bps").value,
+          dateofservice: document.getElementById("dateofservice").value,
+          dischargedate: document.getElementById("dischargedate").value,
+          claim: document.getElementById("claim").value, // ... other form field values
+        };
+        try {
+          const response = await axios.post(
+            "https://7ffef3knya.execute-api.us-west-2.amazonaws.com/Dev/poc",
+            data
+          );
+          console.log(response.data); // Access response data
+          alert("Your data has been submitted successfully!");
+        } catch (error) {
+          console.error("error", error);
+          alert(
+            "An error occurred while submitting your data. Please try again."
+          );
+        }
+      }
+    </script>
+    <style>
+      .wrapper {
+        padding: 50px; /* Adjust padding as needed */
+      }
+    </style>
+  </head>
+
+  <body
+    body
+    style="
+      background-image: url('https://images.unsplash.com/photo-1710127789813-9ce9215caff4?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    "
+  >
+    <div class="wrapper">
+      <div class="container">
+        <h1 class="display-2">Health Data Records</h1>
+        <form>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="fn">Consumer First Name</label>
+
+              <input
+                type="text"
+                class="form-control"
+                placeholder="enter first name"
+                id="fn"
+              />
+            </div>
+            <div class="form-group col-md-6">
+              <label for="ln">Consumer Last Name</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="enter last name"
+                id="ln"
+              />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="dmhid">Patient ID</label>
+              <input
+                type="text"
+                class="form-control"
+                id="dmhid"
+                placeholder="DMHID-#"
+              />
+            </div>
+            <div class="form-group col-md-3 col-6">
+              <label for="bpd">Diastolic BP</label>
+
+              <input
+                type="number"
+                class="form-control"
+                placeholder="Diastolic"
+                id="bpd"
+              />
+            </div>
+            <div class="form-group col-md-3 col-6">
+              <label for="bps">Systolic BP</label>
+              <input
+                type="number"
+                class="form-control"
+                placeholder="Systolic"
+                id="bps"
+              />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="dateofservice">Date of Service</label>
+              <input type="date" class="form-control" id="dateofservice" />
+            </div>
+            <div class="form-group col-md-4">
+              <label for="dischargedate">Discharge Date</label>
+              <input type="date" class="form-control" id="dischargedate" />
+            </div>
+            <div class="form-group col-md-4">
+              <label for="claim">Paid Amount</label>
+              <input
+                type="number"
+                step="0.01"
+                class="form-control"
+                placeholder="$$"
+                id="claim"
+              />
+            </div>
+          </div>
+          <button
+            id="submit"
+            class="btn btn-success"
+            onclick="return areFieldsEmpty() && validateForm() && callAPI(document.getElementById('fn').value,document.getElementById('ln').value,document.getElementById('dmhid').value,document.getElementById('bpd').value,document.getElementById('bps').value,document.getElementById('dateofservice').value,document.getElementById('dischargedate').value,document.getElementById('claim').value)"
+          >
+            Submit Data
+          </button>
+        </form>
+      </div>
+    </div>
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+      integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
